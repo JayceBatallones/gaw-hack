@@ -95,6 +95,50 @@ const folders = {
     { name: 'DBS Fixed Deposit Confirmation', ver: '—', status: 'current', st: 'Current', date: 'Jan 15', by: 'Lillian Chow', size: '22 KB', icon: 'pdf' },
     { name: 'Bank Signatory Update - May 2026', ver: '—', status: 'pending', st: 'Pending', date: 'May 10', by: 'Spencer', size: '35 KB', icon: 'pdf' },
   ]},
+  '05': { name: '05 Pitchbook & Marketing', files: [
+    { name: 'Investor Pitchbook - Project Arts', ver: 'v3', status: 'current', st: 'Current', date: 'Feb 20', by: 'James Bradley', size: '12,400 KB', icon: 'pdf' },
+    { name: 'One-Pager - Ballet Portfolio', ver: '—', status: 'current', st: 'Current', date: 'Mar 5', by: 'Paul', size: '890 KB', icon: 'pdf' },
+    { name: 'Teaser Memo - Project Arts', ver: 'v2', status: 'current', st: 'Current', date: 'Jan 18', by: 'James Bradley', size: '2,100 KB', icon: 'pdf' },
+    { name: 'Marketing Deck - Singapore Education', ver: '—', status: 'current', st: 'Current', date: 'Nov 5', by: 'Paul', size: '6,700 KB', icon: 'pdf' },
+    { name: 'Track Record Slide - Education Sector', ver: '—', status: 'current', st: 'Current', date: 'Dec 12', by: 'Paul', size: '1,400 KB', icon: 'pdf' },
+  ]},
+  '09': { name: '09 Takeover Process', files: [
+    { name: 'SPA - SDM Acquisition Agreement', ver: 'Final', status: 'current', st: 'Current', date: 'Aug 15', by: 'Legal', size: '8,200 KB', icon: 'pdf' },
+    { name: 'SPA - Tinkerland Acquisition', ver: 'Final', status: 'current', st: 'Current', date: 'Sep 20', by: 'Legal', size: '7,400 KB', icon: 'pdf' },
+    { name: 'Completion Accounts - SDM', ver: '—', status: 'current', st: 'Current', date: 'Oct 5', by: 'Lillian Chow', size: '560 KB', icon: 'xls' },
+    { name: 'Conditions Precedent Checklist', ver: '—', status: 'current', st: 'Current', date: 'Aug 10', by: 'Spencer', size: '125 KB', icon: 'xls' },
+    { name: 'Regulatory Approvals - ECDA Consent', ver: '—', status: 'current', st: 'Current', date: 'Jul 28', by: 'Legal', size: '340 KB', icon: 'pdf' },
+  ]},
+  '10': { name: '10 HoldCos', files: [
+    { name: 'HoldCo Structure Chart', ver: 'v4', status: 'current', st: 'Current', date: 'Jan 20', by: 'Spencer', size: '450 KB', icon: 'pdf' },
+    { name: 'Certificate of Incorporation - Ballet HoldCo', ver: '—', status: 'current', st: 'Current', date: 'May 12', by: 'Legal', size: '120 KB', icon: 'pdf' },
+    { name: 'Certificate of Incorporation - SG OpCo', ver: '—', status: 'current', st: 'Current', date: 'May 12', by: 'Legal', size: '115 KB', icon: 'pdf' },
+    { name: 'Director Register - All Entities', ver: '—', status: 'current', st: 'Current', date: 'Mar 1', by: 'Spencer', size: '78 KB', icon: 'xls' },
+    { name: 'Shareholder Register', ver: '—', status: 'current', st: 'Current', date: 'Jan 5', by: 'Spencer', size: '45 KB', icon: 'xls' },
+    { name: 'Board Resolution - Apr 2026 Drawdown', ver: '—', status: 'approved', st: 'Approved', date: 'Mar 2', by: 'Paul', size: '89 KB', icon: 'pdf' },
+  ]},
+  '13': { name: '13 Sunflower', files: [
+    { name: 'Sunflower P&L - Apr 2026', ver: '—', status: 'current', st: 'Current', date: 'May 2', by: 'Jo Chan', size: '92 KB', icon: 'xls' },
+    { name: 'Sunflower P&L - Mar 2026', ver: '—', status: 'current', st: 'Current', date: 'Apr 5', by: 'Jo Chan', size: '88 KB', icon: 'xls' },
+    { name: 'Sunflower Balance Sheet - Q1 2026', ver: '—', status: 'current', st: 'Current', date: 'Apr 15', by: 'Jo Chan', size: '76 KB', icon: 'xls' },
+    { name: 'Sunflower Enrollment Tracker', ver: '—', status: 'current', st: 'Current', date: 'May 1', by: 'Sharon Chan', size: '54 KB', icon: 'xls' },
+    { name: 'Sunflower ECDA License Renewal 2024', ver: '—', status: 'current', st: 'Current', date: 'Aug 15', by: 'Legal', size: '310 KB', icon: 'pdf' },
+    { name: 'Sunflower Lease Agreement 2023', ver: '—', status: 'current', st: 'Current', date: 'Aug 15', by: 'Legal', size: '1,920 KB', icon: 'pdf' },
+  ]},
+  '14': { name: '14 Tinytots', files: [
+    { name: 'Global Tots East Gate P&L - Mar 2026', ver: '—', status: 'review', st: 'Under Review', date: 'Apr 28', by: 'Sharon Chan', size: '94 KB', icon: 'xls' },
+    { name: 'Global Tots East Gate P&L - Feb 2026', ver: '—', status: 'current', st: 'Current', date: 'Mar 15', by: 'Sharon Chan', size: '91 KB', icon: 'xls' },
+    { name: 'Global Tots Mountbatten P&L - Apr 2026', ver: '—', status: 'current', st: 'Current', date: 'May 6', by: 'Sharon Chan', size: '87 KB', icon: 'xls' },
+    { name: 'Global Tots Enrollment Summary - Apr 2026', ver: '—', status: 'current', st: 'Current', date: 'May 3', by: 'Jo Chan', size: '62 KB', icon: 'xls' },
+    { name: 'GTEG Teacher Staffing Plan', ver: '—', status: 'attention', st: 'Attention', date: 'Apr 20', by: 'Sharon Chan', size: '110 KB', icon: 'xls' },
+  ]},
+  '22': { name: '22 Sales', files: [
+    { name: 'Exit Readiness Assessment', ver: 'v2', status: 'draft', st: 'Draft', date: 'Apr 25', by: 'James Bradley', size: '1,800 KB', icon: 'pdf' },
+    { name: 'Buyer Universe - Long List', ver: '—', status: 'current', st: 'Current', date: 'Mar 20', by: 'Paul', size: '340 KB', icon: 'xls' },
+    { name: 'Indicative Valuation Summary', ver: '—', status: 'draft', st: 'Draft', date: 'Apr 18', by: 'James Bradley', size: '560 KB', icon: 'xls' },
+    { name: 'Comparable Transactions - APAC Education', ver: '—', status: 'current', st: 'Current', date: 'Feb 28', by: 'Lillian Chow', size: '220 KB', icon: 'xls' },
+    { name: 'Process Timeline - Draft', ver: '—', status: 'draft', st: 'Draft', date: 'Apr 22', by: 'Paul', size: '85 KB', icon: 'pdf' },
+  ]},
 };
 
 const fileDetails = {
