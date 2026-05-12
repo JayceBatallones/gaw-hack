@@ -1,3 +1,5 @@
+import { i } from '../icons.js';
+
 let tasks = [
   { id: 1, pri: 'p1', source: 'planned', title: 'Finalize UW Model v5 for Capital Markets submission', cat: 'Finance', due: 'May 15', dueClass: 'soon', assignee: 'LC', status: 'progress' },
   { id: 2, pri: 'p1', source: 'planned', title: 'Review March Management Accounts — all entities', cat: 'Finance', due: 'May 10', dueClass: 'overdue', assignee: 'JB', status: 'progress' },
@@ -38,7 +40,7 @@ export function tasksPage() {
       </div>
 
       <div class="impact-banner">
-        <div style="font-size:18px;flex-shrink:0">&#9888;</div>
+        <div style="flex-shrink:0">${i.alert}</div>
         <div><strong>Workload Alert:</strong> Adding "Translate Thai corporate docs" (ad-hoc, due May 18) will push "Prepare Q1 Investor Report" past its May 30 deadline for Lillian. Review prioritization?</div>
       </div>
 

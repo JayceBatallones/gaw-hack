@@ -1,3 +1,5 @@
+import { i } from '../icons.js';
+
 const presetResponses = {
   'irr': {
     q: "What's the current projected IRR for Project Arts?",
@@ -62,6 +64,22 @@ const presetResponses = {
       Exiting before the SDM International expansion is fully reflected in revenue would leave significant value on the table. Exiting after 2029 risks sector multiple compression as the Singapore childcare market matures.`,
     source: 'Ballet UW v5 → DCF sheet, Comps sheet, Market research'
   },
+  'refinitiv': {
+    q: "Pull latest comparable multiples from Refinitiv for Singapore education sector",
+    a: `<strong>Refinitiv Workspace — Singapore Education Sector Comps</strong> <span class="status-badge refinitiv-tag" style="font-size:9px;padding:2px 6px;background:#e0e7ff;color:#3730a3">via Refinitiv</span><br><br>
+      Pulled from Refinitiv Eikon as of May 12, 2026. Filtered for APAC education and childcare operators with EV > S$50M.<br><br>
+      <table class="msg-table"><thead><tr><th>Company</th><th>EV/EBITDA</th><th>EV/Revenue</th><th>Mkt Cap (S$M)</th></tr></thead><tbody>
+        <tr><td>MindChamps PreSchool</td><td>8.2x</td><td>2.1x</td><td>142</td></tr>
+        <tr><td>EtonHouse International</td><td>12.4x</td><td>3.2x</td><td>380</td></tr>
+        <tr><td>Busy Bees (UK, APAC ops)</td><td>14.1x</td><td>2.8x</td><td>1,250</td></tr>
+        <tr><td>KinderWorld International</td><td>10.8x</td><td>2.5x</td><td>215</td></tr>
+        <tr><td>G8 Education (ASX)</td><td>9.6x</td><td>1.9x</td><td>890</td></tr>
+      </tbody></table><br>
+      <strong>Median EV/EBITDA:</strong> 10.8x &nbsp;&nbsp; <strong>Mean:</strong> 11.0x<br>
+      Ballet portfolio implied EV/EBITDA of 10.1x is slightly below median — potential upside at exit if operational improvements close the gap.<br><br>
+      <em>Data sourced from Refinitiv Workspace. Cross-referenced with SGX filings and Bloomberg for listed entities.</em>`,
+    source: 'Refinitiv Workspace (live), SGX Edge, Bloomberg Terminal'
+  },
   'market': {
     q: "What are the key trends in Singapore's preschool market?",
     a: `<strong>Singapore Preschool Market — Key Trends (Q1 2026)</strong><br><br>
@@ -84,8 +102,8 @@ let messages = [
 const suggestedPrompts = [
   { label: 'Summarize Project Arts for MP briefing', key: 'summary' },
   { label: 'Which reports are overdue?', key: 'overdue' },
+  { label: 'Pull Refinitiv comps data', key: 'refinitiv' },
   { label: 'Exit timing analysis', key: 'exit' },
-  { label: 'Singapore preschool market trends', key: 'market' },
 ];
 
 export function intelligencePage() {
@@ -101,6 +119,7 @@ export function intelligencePage() {
               <span class="tag">UW Model v5</span>
               <span class="tag">Mgmt Accounts (Dec 2025)</span>
               <span class="tag">Monitoring Data</span>
+              <span class="tag refinitiv">Refinitiv</span>
             </div>
           </div>
           <div class="chat-messages" id="chat-messages">${renderMessages()}</div>
@@ -111,7 +130,7 @@ export function intelligencePage() {
           </div>
           <div class="chat-input-area">
             <input type="text" class="chat-input" id="chat-input" placeholder="Ask about Project Arts...">
-            <button class="send-btn" id="send-btn">&#10148;</button>
+            <button class="send-btn" id="send-btn">${i.send}</button>
           </div>
         </div>
         ${renderResearchPanel()}
@@ -138,6 +157,11 @@ function renderResearchPanel() {
       ${insightCard('competitor', 'Competitor Pricing Analysis — Major SG Operators', 'Average monthly fees increased 4.2% across top-10 operators. Premium segment showing strongest growth.', 'Generated Mar 15, 2026')}
       ${insightCard('exit', 'Education Sector M&A Activity — Asia 2025', '23 transactions closed in APAC education sector. Median EV/EBITDA of 11.3x for childcare platforms.', 'Generated Feb 28, 2026')}
       ${insightCard('operational', 'Enrollment Optimization — Portfolio Benchmark', 'Portfolio average occupancy at 87% vs. industry benchmark of 91%. Three centers below 80% threshold.', 'Generated Feb 15, 2026')}
+      <div class="rp-section-label">External Data Sources</div>
+      ${dataSourceItem('Refinitiv Workspace', 'Market data, comps, sector multiples', true)}
+      ${dataSourceItem('Bloomberg Terminal', 'Bond pricing, credit data', false)}
+      ${dataSourceItem('ECDA Registry', 'License status, regulatory filings', true)}
+      ${dataSourceItem('SGX Edge', 'Listed operator financials', true)}
       <div class="rp-section-label">Scheduled Research</div>
       ${scheduledItem('Singapore childcare market update', 'Next: Jul 1, 2026', 'Quarterly')}
       ${scheduledItem('Competitor pricing changes', 'Next: Jun 1, 2026', 'Monthly')}
@@ -152,6 +176,7 @@ function findResponse(input) {
   if (lower.includes('overdue') || lower.includes('report') || lower.includes('missing')) return presetResponses.overdue;
   if (lower.includes('summary') || lower.includes('summarize') || lower.includes('briefing') || lower.includes('mp')) return presetResponses.summary;
   if (lower.includes('exit') || lower.includes('timing') || lower.includes('sell')) return presetResponses.exit;
+  if (lower.includes('refinitiv') || lower.includes('comps') || lower.includes('comparable') || lower.includes('multiple')) return presetResponses.refinitiv;
   if (lower.includes('market') || lower.includes('trend') || lower.includes('singapore') || lower.includes('preschool')) return presetResponses.market;
   return {
     a: `I can help with that. Based on the Project Arts data I have access to, here are the areas I can provide insights on:<br><br>
@@ -232,6 +257,10 @@ export function initIntelligence() {
 
 function insightCard(cat, title, summary, date) {
   return `<div class="insight-card"><div class="ic-cat ${cat}">${cat}</div><div class="ic-title">${title}</div><div class="ic-summary">${summary}</div><div class="ic-date">${date}</div></div>`;
+}
+
+function dataSourceItem(name, desc, connected) {
+  return `<div class="ds-item"><div class="ds-status ${connected ? 'connected' : 'pending'}"></div><div><div class="ds-name">${name}</div><div class="ds-desc">${desc}</div></div><div class="ds-badge ${connected ? 'connected' : ''}">${connected ? 'Connected' : 'Pending'}</div></div>`;
 }
 
 function scheduledItem(title, next, freq) {

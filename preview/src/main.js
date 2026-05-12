@@ -3,6 +3,7 @@ import { documentsPage, initDocuments } from './pages/documents.js';
 import { monitoringPage, initMonitoring } from './pages/monitoring.js';
 import { intelligencePage, initIntelligence } from './pages/intelligence.js';
 import { tasksPage, initTasks } from './pages/tasks.js';
+import { i } from './icons.js';
 
 const DEMO_PASSWORD = 'gaw2026';
 const app = document.getElementById('app');
@@ -69,21 +70,21 @@ function shell(pageContent, activeNav, topbarSuffix = '') {
         </div>
         <nav class="nav-section">
           <div class="nav-label">Portfolio</div>
-          <a class="nav-item ${activeNav === 'dashboard' ? 'active' : ''}" data-nav="dashboard"><span class="nav-icon">&#9638;</span> Dashboard</a>
-          <a class="nav-item ${activeNav === 'documents' ? 'active' : ''}" data-nav="documents"><span class="nav-icon">&#128193;</span> Documents</a>
-          <a class="nav-item ${activeNav === 'monitoring' ? 'active' : ''}" data-nav="monitoring"><span class="nav-icon">&#128276;</span> Monitoring</a>
-          <a class="nav-item ${activeNav === 'intelligence' ? 'active' : ''}" data-nav="intelligence"><span class="nav-icon">&#10024;</span> Intelligence</a>
-          <a class="nav-item ${activeNav === 'tasks' ? 'active' : ''}" data-nav="tasks"><span class="nav-icon">&#9745;</span> Tasks</a>
+          <a class="nav-item ${activeNav === 'dashboard' ? 'active' : ''}" data-nav="dashboard"><span class="nav-icon">${i.dashboard}</span> Dashboard</a>
+          <a class="nav-item ${activeNav === 'documents' ? 'active' : ''}" data-nav="documents"><span class="nav-icon">${i.documents}</span> Documents</a>
+          <a class="nav-item ${activeNav === 'monitoring' ? 'active' : ''}" data-nav="monitoring"><span class="nav-icon">${i.monitoring}</span> Monitoring</a>
+          <a class="nav-item ${activeNav === 'intelligence' ? 'active' : ''}" data-nav="intelligence"><span class="nav-icon">${i.intelligence}</span> Intelligence</a>
+          <a class="nav-item ${activeNav === 'tasks' ? 'active' : ''}" data-nav="tasks"><span class="nav-icon">${i.tasks}</span> Tasks</a>
         </nav>
         <nav class="nav-section bottom">
-          <a class="nav-item" id="logout-btn"><span class="nav-icon">&#8617;</span> Sign Out</a>
+          <a class="nav-item" id="logout-btn"><span class="nav-icon">${i.logout}</span> Sign Out</a>
         </nav>
       </aside>
       <div class="main">
         <div class="topbar">
           <div class="topbar-left"><strong>Project Arts</strong> &mdash; Ballet${topbarSuffix}</div>
           <div class="topbar-right">
-            <div class="notif-dot">&#128276;<div class="badge">3</div></div>
+            <div class="notif-dot">${i.bellRing}<div class="badge">3</div></div>
             <div class="avatar">JB</div>
           </div>
         </div>

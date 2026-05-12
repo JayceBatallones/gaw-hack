@@ -1,3 +1,26 @@
+import { i } from '../icons.js';
+
+const leases = [
+  { entity: 'SDM Childcare (Jurong East)', type: 'Lease', address: 'Blk 135 Jurong East St 13', expiry: 'Dec 31, 2027', daysLeft: 599, landlord: 'HDB', monthlyRent: 'S$18,500', file: 'SDM_JE_Lease_Agreement_2022.pdf' },
+  { entity: 'Tinkerland', type: 'Lease', address: '10 Winstedt Rd', expiry: 'Mar 15, 2028', daysLeft: 673, landlord: 'URA', monthlyRent: 'S$22,800', file: 'Tinkerland_Lease_2023.pdf' },
+  { entity: 'SDM International', type: 'Lease', address: '321 Alexandra Rd', expiry: 'Jun 30, 2029', daysLeft: 1145, landlord: 'JTC Corporation', monthlyRent: 'S$35,200', file: 'SDM_Intl_Lease_2024.pdf' },
+  { entity: 'Global Tots @ East Gate', type: 'Lease', address: '20 East Coast Rd', expiry: 'Feb 28, 2028', daysLeft: 657, landlord: 'Private', monthlyRent: 'S$14,600', file: 'GTEG_Lease_2023.pdf' },
+  { entity: 'Global Tots @ Mountbatten', type: 'Lease', address: '15 Mountbatten Rd', expiry: 'Sep 30, 2027', daysLeft: 507, landlord: 'Private', monthlyRent: 'S$16,900', file: 'GTMB_Lease_2022.pdf' },
+  { entity: 'Sunflower Preschool', type: 'Lease', address: '88 Bukit Timah Rd', expiry: 'Aug 31, 2028', daysLeft: 842, landlord: 'SLA', monthlyRent: 'S$19,700', file: 'Sunflower_Lease_2023.pdf' },
+];
+
+const licenses = [
+  { entity: 'SDM Childcare (Jurong East)', type: 'ECDA License', number: 'CC-2024-0892', expiry: 'Jan 31, 2027', daysLeft: 265 },
+  { entity: 'SDM International', type: 'ECDA License', number: 'PS-2024-0341', expiry: 'Mar 15, 2027', daysLeft: 308 },
+  { entity: 'Global Tots @ East Gate', type: 'ECDA License', number: 'CC-2023-1205', expiry: 'Nov 30, 2026', daysLeft: 202 },
+];
+
+const loans = [
+  { name: 'Term Loan Facility', bank: 'DBS Bank', amount: 'S$18.5M', drawn: 'S$18.5M', rate: 'SORA + 2.25%', maturity: 'Dec 15, 2028', daysLeft: 948, covenants: 'DSCR > 1.2x, LTV < 65%', file: 'Ballet_DBS_TermLoan_2023.pdf' },
+  { name: 'Revolving Credit Facility', bank: 'OCBC', amount: 'S$3.0M', drawn: 'S$1.8M', rate: 'SORA + 1.85%', maturity: 'Jun 30, 2026', daysLeft: 49, covenants: 'Annual review', file: 'Ballet_OCBC_RCF_2025.pdf' },
+  { name: 'Capex Facility', bank: 'DBS Bank', amount: 'S$5.0M', drawn: 'S$3.2M', rate: 'SORA + 2.50%', maturity: 'Mar 31, 2029', daysLeft: 1054, covenants: 'Tied to SDM International build-out', file: 'Ballet_DBS_Capex_2024.pdf' },
+];
+
 const entities = [
   { name: 'SDM Childcare Centre (Jurong East)', type: 'Childcare Centre', rev: 'S$1,493,672', enroll: '142 / 160', pct: 89, updated: 'May 10, 2026', status: 'on-track', statusText: 'On Track' },
   { name: 'Tinkerland Private Limited', type: 'Preschool', rev: 'S$1,829,672', enroll: '165 / 180', pct: 92, updated: 'May 8, 2026', status: 'on-track', statusText: 'On Track' },
@@ -50,6 +73,7 @@ export function dashboardPage() {
           <div class="panel" style="margin-bottom: 24px;">
             <div class="section-title">Upcoming Deadlines</div>
             ${deadline('Apr Management Report', 'Global Tots East Gate', 'overdue', 'Overdue')}
+            ${deadline('OCBC RCF Annual Renewal', 'Portfolio', 'warn', 'Jun 30')}
             ${deadline('Apr Management Report', 'Sunflower Preschool', 'warn', 'May 14')}
             ${deadline('Q1 Audit Report', 'All Entities', 'ok', 'May 20')}
             ${deadline('Capex Forecast', 'Portfolio', 'ok', 'May 25')}
@@ -62,6 +86,61 @@ export function dashboardPage() {
             ${activity('decision', 'IC Memo approved by Investment Committee', 'Feb 25, 2026')}
             ${activity('task', 'Budget V2 submitted for review', 'Nov 10, 2025')}
           </div>
+        </div>
+      </div>
+
+      <!-- Contracts & Leases -->
+      <div class="panel" style="margin-bottom:24px">
+        <div class="section-title">Contracts & Leases</div>
+        <table class="file-table">
+          <thead><tr><th>Entity</th><th>Type</th><th>Address / Details</th><th>Expiry</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            ${leases.map(l => `<tr class="lease-row" data-file="${l.file}" data-entity="${l.entity}" data-type="${l.type}" data-address="${l.address}" data-expiry="${l.expiry}" data-landlord="${l.landlord}" data-rent="${l.monthlyRent}">
+              <td style="font-weight:600">${l.entity}</td>
+              <td><span class="status-badge info">${l.type}</span></td>
+              <td style="font-size:12px;color:#5d6567">${l.address}</td>
+              <td><span class="tc-due ${l.daysLeft < 365 ? 'soon' : ''} ${l.daysLeft < 180 ? 'overdue' : ''}">${l.expiry}</span></td>
+              <td><span class="status-badge ${l.daysLeft < 365 ? (l.daysLeft < 180 ? 'critical' : 'attention') : 'on-track'}">${l.daysLeft < 365 ? (l.daysLeft < 180 ? 'Expiring Soon' : 'Under 1 Year') : 'Active'}</span></td>
+              <td><button class="view-contract-btn" data-file="${l.file}">View PDF</button></td>
+            </tr>`).join('')}
+            ${licenses.map(l => `<tr class="lease-row">
+              <td style="font-weight:600">${l.entity}</td>
+              <td><span class="status-badge approved">${l.type}</span></td>
+              <td style="font-size:12px;color:#5d6567">${l.number}</td>
+              <td><span class="tc-due ${l.daysLeft < 365 ? 'soon' : ''}">${l.expiry}</span></td>
+              <td><span class="status-badge ${l.daysLeft < 365 ? 'attention' : 'on-track'}">${l.daysLeft < 365 ? 'Renewal Due' : 'Active'}</span></td>
+              <td></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Project Loan Details -->
+      <div class="panel" style="margin-bottom:24px">
+        <div class="section-title">Project Loan Details</div>
+        <div class="loans-grid">
+          ${loans.map(l => `<div class="loan-card">
+            <div class="loan-header">
+              <div><div class="loan-name">${l.name}</div><div class="loan-bank">${l.bank}</div></div>
+              <span class="status-badge ${l.daysLeft < 90 ? 'critical' : l.daysLeft < 365 ? 'attention' : 'on-track'}">${l.daysLeft < 90 ? 'Due Soon' : l.daysLeft < 365 ? 'Under 1 Year' : 'Active'}</span>
+            </div>
+            <div class="loan-details">
+              <div class="loan-detail"><span class="loan-label">Facility</span><span class="loan-val">${l.amount}</span></div>
+              <div class="loan-detail"><span class="loan-label">Drawn</span><span class="loan-val">${l.drawn}</span></div>
+              <div class="loan-detail"><span class="loan-label">Rate</span><span class="loan-val">${l.rate}</span></div>
+              <div class="loan-detail"><span class="loan-label">Maturity</span><span class="loan-val">${l.maturity}</span></div>
+              <div class="loan-detail" style="grid-column:1/-1"><span class="loan-label">Covenants</span><span class="loan-val">${l.covenants}</span></div>
+            </div>
+            <button class="view-contract-btn" data-file="${l.file}" style="margin-top:12px">View Loan Agreement</button>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Contract Detail Modal -->
+      <div id="contract-modal" class="modal-overlay hidden">
+        <div class="modal-card" style="width:560px">
+          <div class="modal-header"><h3 id="contract-modal-title">Contract Details</h3><button class="drawer-close" id="contract-modal-close">&times;</button></div>
+          <div class="modal-body" id="contract-modal-body"></div>
         </div>
       </div>
     </div>
@@ -93,6 +172,15 @@ export function initDashboard() {
           <div class="drawer-doc-item">Bank Statement &mdash; Apr 2026 <span class="status-badge pending">Pending</span></div>
         </div>
         <div class="drawer-section">
+          <div class="drawer-section-title">Lease Details</div>
+          ${(() => { const l = leases.find(x => e.name.includes(x.entity.split(' (')[0].split(' @')[0])); return l ? `
+            <div style="font-size:12px;margin-bottom:4px"><strong>Address:</strong> ${l.address}</div>
+            <div style="font-size:12px;margin-bottom:4px"><strong>Landlord:</strong> ${l.landlord}</div>
+            <div style="font-size:12px;margin-bottom:4px"><strong>Rent:</strong> ${l.monthlyRent}/mo</div>
+            <div style="font-size:12px"><strong>Expiry:</strong> <span class="tc-due ${l.daysLeft < 365 ? 'soon' : ''}">${l.expiry} (${l.daysLeft} days)</span></div>
+          ` : '<div style="font-size:12px;color:#9ca3af">No lease data</div>'; })()}
+        </div>
+        <div class="drawer-section">
           <div class="drawer-section-title">Status</div>
           <div class="status-badge ${e.status}" style="font-size:12px;padding:4px 12px">${e.statusText}</div>
           <div style="font-size:12px;color:#9ca3af;margin-top:8px">Last updated: ${e.updated}</div>
@@ -117,6 +205,96 @@ export function initDashboard() {
       window.location.hash = '/documents';
     });
   });
+
+  // Lease row click → show contract detail modal
+  document.querySelectorAll('.lease-row[data-file]').forEach(row => {
+    row.addEventListener('click', (e) => {
+      if (e.target.classList.contains('view-contract-btn')) return;
+      showContractModal(row.dataset.entity, row.dataset.type, {
+        address: row.dataset.address,
+        expiry: row.dataset.expiry,
+        landlord: row.dataset.landlord,
+        rent: row.dataset.rent,
+        file: row.dataset.file,
+      });
+    });
+  });
+
+  // View PDF / View Contract buttons
+  document.querySelectorAll('.view-contract-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const file = btn.dataset.file;
+      const row = btn.closest('.lease-row') || btn.closest('.loan-card');
+      if (row?.classList.contains('lease-row')) {
+        showContractModal(row.dataset.entity, row.dataset.type, {
+          address: row.dataset.address,
+          expiry: row.dataset.expiry,
+          landlord: row.dataset.landlord,
+          rent: row.dataset.rent,
+          file: file,
+        });
+      } else {
+        const loan = loans.find(l => l.file === file);
+        if (loan) showLoanModal(loan);
+      }
+    });
+  });
+
+  // Contract modal close
+  document.getElementById('contract-modal-close')?.addEventListener('click', () => {
+    document.getElementById('contract-modal')?.classList.add('hidden');
+  });
+  document.getElementById('contract-modal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'contract-modal') document.getElementById('contract-modal')?.classList.add('hidden');
+  });
+}
+
+function showContractModal(entity, type, data) {
+  const modal = document.getElementById('contract-modal');
+  document.getElementById('contract-modal-title').textContent = `${entity} — ${type}`;
+  document.getElementById('contract-modal-body').innerHTML = `
+    <div class="contract-detail-grid">
+      <div class="contract-field"><div class="contract-field-label">Property Address</div><div class="contract-field-val">${data.address}</div></div>
+      <div class="contract-field"><div class="contract-field-label">Landlord</div><div class="contract-field-val">${data.landlord}</div></div>
+      <div class="contract-field"><div class="contract-field-label">Monthly Rent</div><div class="contract-field-val">${data.rent}</div></div>
+      <div class="contract-field"><div class="contract-field-label">Lease Expiry</div><div class="contract-field-val">${data.expiry}</div></div>
+    </div>
+    <div class="contract-pdf-preview">
+      <div class="pdf-placeholder">
+        <div class="pdf-icon">PDF</div>
+        <div class="pdf-filename">${data.file}</div>
+        <div class="pdf-size">Extracted from executed contract</div>
+        <button class="add-btn" style="margin-top:12px;font-size:12px">Open Full Document</button>
+      </div>
+    </div>
+    <div style="font-size:11px;color:#9ca3af;margin-top:12px">Document stored in: 08 SG Legal / Lease Agreements</div>
+  `;
+  modal.classList.remove('hidden');
+}
+
+function showLoanModal(loan) {
+  const modal = document.getElementById('contract-modal');
+  document.getElementById('contract-modal-title').textContent = `${loan.name} — ${loan.bank}`;
+  document.getElementById('contract-modal-body').innerHTML = `
+    <div class="contract-detail-grid">
+      <div class="contract-field"><div class="contract-field-label">Facility Amount</div><div class="contract-field-val">${loan.amount}</div></div>
+      <div class="contract-field"><div class="contract-field-label">Amount Drawn</div><div class="contract-field-val">${loan.drawn}</div></div>
+      <div class="contract-field"><div class="contract-field-label">Interest Rate</div><div class="contract-field-val">${loan.rate}</div></div>
+      <div class="contract-field"><div class="contract-field-label">Maturity Date</div><div class="contract-field-val">${loan.maturity}</div></div>
+      <div class="contract-field" style="grid-column:1/-1"><div class="contract-field-label">Key Covenants</div><div class="contract-field-val">${loan.covenants}</div></div>
+    </div>
+    <div class="contract-pdf-preview">
+      <div class="pdf-placeholder">
+        <div class="pdf-icon">PDF</div>
+        <div class="pdf-filename">${loan.file}</div>
+        <div class="pdf-size">Loan agreement document</div>
+        <button class="add-btn" style="margin-top:12px;font-size:12px">Open Full Document</button>
+      </div>
+    </div>
+    <div style="font-size:11px;color:#9ca3af;margin-top:12px">Document stored in: 12 SG Finance / Loan Agreements</div>
+  `;
+  modal.classList.remove('hidden');
 }
 
 function entityCard(e, i) {

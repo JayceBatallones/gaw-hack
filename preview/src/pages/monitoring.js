@@ -1,3 +1,5 @@
+import { i } from '../icons.js';
+
 const entitiesData = [
   { name: 'SDM Childcare (Jurong East)', mgmt: [1,1,1,1,1,1,1,1,1,1,2], bank: [1,1,1,1,1,1,1,1,1,1,2] },
   { name: 'Tinkerland', mgmt: [1,1,1,1,1,1,1,1,1,1,2], bank: [1,1,1,1,1,1,1,1,1,1,2] },
@@ -11,18 +13,18 @@ const entitiesData = [
 const months = ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'];
 
 const alerts = [
-  { type: 'err', icon: '&#9888;', text: '<strong>OVERDUE:</strong> April Management Report from Global Tots East Gate is 5 days overdue. Notification sent to AM team.', time: 'May 12, 2026', read: false },
-  { type: 'err', icon: '&#9888;', text: '<strong>OVERDUE:</strong> March Management Report from Global Tots East Gate still outstanding. Escalated.', time: 'May 8, 2026', read: false },
-  { type: 'warn', icon: '&#9888;', text: '<strong>REMINDER:</strong> April Management Reports due from SDM International Pre-school in 2 days.', time: 'May 5, 2026', read: true },
-  { type: 'ok', icon: '&#10003;', text: '<strong>RECEIVED:</strong> April Management Report from SDM Childcare (Jurong East). Auto-filed to 18 SG Finance / Management Accounts.', time: 'May 3, 2026', read: true },
-  { type: 'ok', icon: '&#10003;', text: '<strong>RECEIVED:</strong> April Management Report from Sunflower Preschool. Auto-filed.', time: 'May 2, 2026', read: true },
-  { type: 'ok', icon: '&#10003;', text: '<strong>RECEIVED:</strong> March Bank Statements consolidated. Auto-filed.', time: 'Apr 12, 2026', read: true },
+  { type: 'err', icon: 'alert', text: '<strong>OVERDUE:</strong> April Management Report from Global Tots East Gate is 5 days overdue. Notification sent to AM team.', time: 'May 12, 2026', read: false },
+  { type: 'err', icon: 'alert', text: '<strong>OVERDUE:</strong> March Management Report from Global Tots East Gate still outstanding. Escalated.', time: 'May 8, 2026', read: false },
+  { type: 'warn', icon: 'alert', text: '<strong>REMINDER:</strong> April Management Reports due from SDM International Pre-school in 2 days.', time: 'May 5, 2026', read: true },
+  { type: 'ok', icon: 'check', text: '<strong>RECEIVED:</strong> April Management Report from SDM Childcare (Jurong East). Auto-filed to 18 SG Finance / Management Accounts.', time: 'May 3, 2026', read: true },
+  { type: 'ok', icon: 'check', text: '<strong>RECEIVED:</strong> April Management Report from Sunflower Preschool. Auto-filed.', time: 'May 2, 2026', read: true },
+  { type: 'ok', icon: 'check', text: '<strong>RECEIVED:</strong> March Bank Statements consolidated. Auto-filed.', time: 'Apr 12, 2026', read: true },
 ];
 
 let alertFilter = 'all'; // all, unread, overdue
 
 export function monitoringPage() {
-  const cellMap = { 0: ['na','&mdash;'], 1: ['received','&#10003;'], 2: ['pending','&#8987;'], 3: ['overdue','&#10007;'] };
+  const cellMap = { 0: ['na', i.minus], 1: ['received', i.checkCell], 2: ['pending', i.hourglass], 3: ['overdue', i.xCell] };
   const received = entitiesData.reduce((s,e) => s + e.mgmt.filter(v=>v===1).length + e.bank.filter(v=>v===1).length, 0);
   const pending = entitiesData.reduce((s,e) => s + e.mgmt.filter(v=>v===2).length + e.bank.filter(v=>v===2).length, 0);
   const overdue = entitiesData.reduce((s,e) => s + e.mgmt.filter(v=>v===3).length + e.bank.filter(v=>v===3).length, 0);
@@ -59,6 +61,21 @@ export function monitoringPage() {
       <!-- Cell detail popup -->
       <div id="cell-popup" class="cell-popup hidden"></div>
 
+      <div class="panel" style="margin-bottom:24px">
+        <h2 style="font-size:16px;font-weight:600;margin-bottom:16px">Lease & License Tracker</h2>
+        <table class="file-table">
+          <thead><tr><th>Entity</th><th>Item</th><th>Expiry / Renewal</th><th>Days Remaining</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600">Global Tots @ Mountbatten</td><td>Premises Lease</td><td>Sep 30, 2027</td><td>507</td><td><span class="status-badge attention">Under 18 Months</span></td></tr>
+            <tr><td style="font-weight:600">SDM Childcare (Jurong East)</td><td>Premises Lease</td><td>Dec 31, 2027</td><td>599</td><td><span class="status-badge attention">Under 2 Years</span></td></tr>
+            <tr><td style="font-weight:600">Global Tots @ East Gate</td><td>ECDA License</td><td>Nov 30, 2026</td><td>202</td><td><span class="status-badge critical">Renewal Due</span></td></tr>
+            <tr><td style="font-weight:600">SDM Childcare (Jurong East)</td><td>ECDA License</td><td>Jan 31, 2027</td><td>265</td><td><span class="status-badge attention">Renewal Due</span></td></tr>
+            <tr><td style="font-weight:600">OCBC RCF</td><td>Loan Renewal</td><td>Jun 30, 2026</td><td style="color:#b12b35;font-weight:700">49</td><td><span class="status-badge critical">Urgent</span></td></tr>
+            <tr><td style="font-weight:600">SDM International</td><td>ECDA License</td><td>Mar 15, 2027</td><td>308</td><td><span class="status-badge on-track">Active</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="bottom-grid">
         <div class="panel">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -92,7 +109,7 @@ function renderAlerts() {
       if (alertFilter === 'overdue') return a.type === 'err';
       return true;
     })
-    .map(a => `<div class="alert-item ${a.read ? 'read' : ''}"><div class="alert-icon ${a.type}">${a.icon}</div><div><div class="alert-text">${a.text}</div><div class="alert-time">${a.time}</div></div></div>`)
+    .map(a => `<div class="alert-item ${a.read ? 'read' : ''}"><div class="alert-icon ${a.type}">${a.icon === 'alert' ? i.alertSm : i.check}</div><div><div class="alert-text">${a.text}</div><div class="alert-time">${a.time}</div></div></div>`)
     .join('') || '<div style="font-size:13px;color:#9ca3af;padding:16px 0">No alerts match this filter.</div>';
 }
 
