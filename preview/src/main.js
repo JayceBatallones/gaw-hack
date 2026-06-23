@@ -94,30 +94,12 @@ function notifDropdownHtml() {
   `;
 }
 
-// Portfolio-level shell (no project-level nav tabs)
-function portfolioShell(pageContent) {
-  return `
-    <div class="app-shell">
-      <div class="main" style="margin-left:0">
-        <div class="topbar">
-          <div class="topbar-left">
-            <div class="sidebar-logo" style="padding:0;border:none;background:none;gap:10px;display:flex;align-items:center">
-              <div class="shield" style="width:28px;height:28px;font-size:14px;border-radius:4px">G</div>
-              <div class="text" style="font-size:11px">GAW CAPITAL<span style="font-size:10px">Portfolio Resource Center</span></div>
-            </div>
-          </div>
-          <div class="topbar-right">
-            ${notifDropdownHtml()}
-          </div>
-        </div>
-        <div class="content" style="padding-bottom:16px">${pageContent}</div>
-      </div>
-    </div>
-  `;
-}
-
-// Project-level shell (with bottom nav tabs)
 function shell(pageContent, activeNav, topbarSuffix = '') {
+  const isPortfolio = activeNav === 'portfolio';
+  const topbarLeft = isPortfolio
+    ? `<strong>All Projects</strong>`
+    : `<span class="portfolio-back" data-nav="portfolio">All Projects</span><span class="topbar-sep">/</span><strong>${currentProject ? currentProject.name : 'Project'}</strong>${topbarSuffix}`;
+
   return `
     <div class="app-shell">
       <aside class="sidebar">
@@ -140,14 +122,8 @@ function shell(pageContent, activeNav, topbarSuffix = '') {
       </aside>
       <div class="main">
         <div class="topbar">
-          <div class="topbar-left">
-            <span class="portfolio-back" data-nav="portfolio">All Projects</span>
-            <span class="topbar-sep">/</span>
-            <strong>${currentProject ? currentProject.name : 'Project'}</strong>${topbarSuffix}
-          </div>
-          <div class="topbar-right">
-            ${notifDropdownHtml()}
-          </div>
+          <div class="topbar-left">${topbarLeft}</div>
+          <div class="topbar-right">${notifDropdownHtml()}</div>
         </div>
         ${pageContent}
       </div>
@@ -213,7 +189,7 @@ function render() {
 
   // Portfolio overview
   if (route === '/portfolio') {
-    app.innerHTML = portfolioShell(portfolioPage());
+    app.innerHTML = shell(portfolioPage(), 'portfolio');
     bindSharedEvents();
     initPortfolio((projectId) => {
       currentProject = projects.find(p => p.id === projectId) || projects[0];

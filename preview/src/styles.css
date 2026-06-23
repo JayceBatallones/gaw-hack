@@ -34,7 +34,8 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body, #app { height: 100%; }
+html { height: 100%; }
+body, #app { min-height: 100%; }
 body { font-family: var(--font-body); background: var(--surface); color: var(--ink); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
 /* Lucide icon alignment */

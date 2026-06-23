@@ -3,6 +3,7 @@ import { projects } from '../data/projects.js';
 
 export function portfolioPage() {
   return `
+    <div class="content">
     <div class="portfolio-page">
       <div class="portfolio-header">
         <div class="portfolio-header-top">
@@ -21,6 +22,7 @@ export function portfolioPage() {
       <div class="portfolio-grid">
         ${projects.map(p => projectCard(p)).join('')}
       </div>
+    </div>
     </div>
   `;
 }
