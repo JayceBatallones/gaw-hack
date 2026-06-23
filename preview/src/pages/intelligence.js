@@ -171,13 +171,14 @@ function renderResearchPanel() {
 
 function findResponse(input) {
   const lower = input.toLowerCase();
-  if (lower.includes('irr') || lower.includes('return')) return presetResponses.irr;
-  if (lower.includes('rollup') || lower.includes('target') || lower.includes('acquisition')) return presetResponses.rollup;
-  if (lower.includes('overdue') || lower.includes('report') || lower.includes('missing')) return presetResponses.overdue;
-  if (lower.includes('summary') || lower.includes('summarize') || lower.includes('briefing') || lower.includes('mp')) return presetResponses.summary;
-  if (lower.includes('exit') || lower.includes('timing') || lower.includes('sell')) return presetResponses.exit;
-  if (lower.includes('refinitiv') || lower.includes('comps') || lower.includes('comparable') || lower.includes('multiple')) return presetResponses.refinitiv;
-  if (lower.includes('market') || lower.includes('trend') || lower.includes('singapore') || lower.includes('preschool')) return presetResponses.market;
+  const match = (preset, key) => ({ ...preset, key });
+  if (lower.includes('irr') || lower.includes('return')) return match(presetResponses.irr, 'irr');
+  if (lower.includes('rollup') || lower.includes('target') || lower.includes('acquisition')) return match(presetResponses.rollup, 'rollup');
+  if (lower.includes('overdue') || lower.includes('report') || lower.includes('missing')) return match(presetResponses.overdue, 'overdue');
+  if (lower.includes('summary') || lower.includes('summarize') || lower.includes('briefing') || /\bmp\b/.test(lower)) return match(presetResponses.summary, 'summary');
+  if (lower.includes('exit') || lower.includes('timing') || lower.includes('sell')) return match(presetResponses.exit, 'exit');
+  if (lower.includes('refinitiv') || lower.includes('comps') || lower.includes('comparable') || lower.includes('multiple')) return match(presetResponses.refinitiv, 'refinitiv');
+  if (lower.includes('market') || lower.includes('trend') || lower.includes('singapore') || lower.includes('preschool')) return match(presetResponses.market, 'market');
   return {
     a: `I can help with that. Based on the Project Arts data I have access to, here are the areas I can provide insights on:<br><br>
       • <strong>Financial performance</strong> — IRR, NAV, revenue projections, DCF analysis<br>
@@ -185,7 +186,8 @@ function findResponse(input) {
       • <strong>Market intelligence</strong> — Singapore preschool trends, competitor analysis<br>
       • <strong>Strategic recommendations</strong> — rollup targets, exit timing, operational improvements<br><br>
       Could you be more specific about what you'd like to know?`,
-    source: null
+    source: null,
+    key: null
   };
 }
 
@@ -205,13 +207,15 @@ function addMessage(role, text, source) {
   }
 }
 
-function showTypingIndicator() {
+function showTypingIndicator(label) {
   const container = document.getElementById('chat-messages');
   if (!container) return;
   const el = document.createElement('div');
   el.className = 'msg ai';
   el.id = 'typing-msg';
-  el.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+  el.innerHTML = label
+    ? `<div class="typing-indicator thinking-label"><span></span><span></span><span></span><span class="thinking-text">${label}</span></div>`
+    : '<div class="typing-indicator"><span></span><span></span><span></span></div>';
   container.appendChild(el);
   container.scrollTop = container.scrollHeight;
 }
@@ -220,15 +224,73 @@ function removeTypingIndicator() {
   document.getElementById('typing-msg')?.remove();
 }
 
+function streamHtml(html, targetEl, onDone) {
+  let pos = 0;
+  let built = '';
+  const container = document.getElementById('chat-messages');
+
+  const tick = setInterval(() => {
+    let added = 0;
+    while (pos < html.length && added < 4) {
+      if (html[pos] === '<') {
+        const end = html.indexOf('>', pos);
+        if (end !== -1) { built += html.slice(pos, end + 1); pos = end + 1; }
+        else { built += html[pos++]; }
+      } else {
+        built += html[pos++];
+        added++;
+      }
+    }
+    targetEl.innerHTML = built;
+    if (container) container.scrollTop = container.scrollHeight;
+    if (pos >= html.length) { clearInterval(tick); onDone?.(); }
+  }, 16);
+}
+
 function sendMessage(text) {
   if (!text.trim()) return;
   addMessage('user', text);
-  showTypingIndicator();
-  setTimeout(() => {
-    removeTypingIndicator();
-    const resp = findResponse(text);
-    addMessage('ai', resp.a, resp.source);
-  }, 600 + Math.random() * 800);
+
+  const resp = findResponse(text);
+  const finish = () => { removeTypingIndicator(); streamAIResponse(resp.a, resp.source); };
+
+  if (resp.key === 'refinitiv') {
+    showTypingIndicator('Connecting to Refinitiv Workspace...');
+    setTimeout(() => { removeTypingIndicator(); showTypingIndicator(); setTimeout(finish, 800); }, 1400);
+  } else {
+    showTypingIndicator();
+    setTimeout(finish, 600 + Math.random() * 600);
+  }
+}
+
+function streamAIResponse(html, source) {
+  const container = document.getElementById('chat-messages');
+  if (!container) return;
+
+  const msgEl = document.createElement('div');
+  msgEl.className = 'msg ai';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  msgEl.appendChild(bubble);
+  container.appendChild(msgEl);
+  container.scrollTop = container.scrollHeight;
+
+  streamHtml(html, bubble, () => {
+    if (source) {
+      const src = document.createElement('div');
+      src.className = 'msg-source';
+      src.innerHTML = `<strong>Source:</strong> ${source}`;
+      msgEl.appendChild(src);
+    }
+    messages.push({ role: 'ai', text: html, source });
+    const sp = document.getElementById('suggested-prompts');
+    if (sp) {
+      sp.innerHTML = suggestedPrompts.filter(p => !messages.find(m => m.text === presetResponses[p.key]?.q)).map(p =>
+        `<div class="suggested-chip" data-key="${p.key}">${p.label}</div>`
+      ).join('');
+      bindSuggested();
+    }
+  });
 }
 
 function bindSuggested() {
