@@ -286,7 +286,7 @@ svg.lucide { display: inline-block; vertical-align: middle; flex-shrink: 0; }
   font-weight: 600;
   cursor: pointer;
 }
-.content { padding: 32px; flex: 1; animation: fadeIn 300ms ease; }
+.content { padding: clamp(16px, 2.5vw, 32px); flex: 1; animation: fadeIn 300ms ease; }
 .content.no-pad { padding: 0; }
 .add-btn {
   padding: 8px 20px;
@@ -656,9 +656,9 @@ svg.lucide { display: inline-block; vertical-align: middle; flex-shrink: 0; }
   font-weight: 600;
   padding: 20px 24px 16px;
 }
-.matrix { width: 100%; border-collapse: collapse; min-width: 900px; }
+.matrix { width: 100%; border-collapse: collapse; }
 .matrix thead th {
-  padding: 8px 6px;
+  padding: 8px 4px;
   font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
@@ -668,9 +668,9 @@ svg.lucide { display: inline-block; vertical-align: middle; flex-shrink: 0; }
   text-align: center;
   border-bottom: 1px solid var(--border);
 }
-.matrix thead th:first-child { text-align: left; padding-left: 24px; min-width: 220px; }
-.matrix tbody td { padding: 6px; text-align: center; border-bottom: 1px solid var(--border-subtle); }
-.matrix tbody td:first-child { text-align: left; padding-left: 24px; font-size: 13px; font-weight: 500; }
+.matrix thead th:first-child { text-align: left; padding-left: 16px; min-width: 160px; max-width: 200px; }
+.matrix tbody td { padding: 5px 4px; text-align: center; border-bottom: 1px solid var(--border-subtle); }
+.matrix tbody td:first-child { text-align: left; padding-left: 16px; font-size: 12px; font-weight: 500; }
 .matrix .group-header td {
   background: var(--surface);
   font-size: 11px;
@@ -1555,9 +1555,6 @@ details summary::-webkit-details-marker { display: none; }
   }
   .file-panel { width: 100%; border-right: none; min-height: 300px; overflow-x: hidden; }
   .detail-panel { width: 100%; border-left: none; border-top: 1px solid var(--border); padding: 16px; }
-  /* Hide less-critical columns in file table on mobile */
-  .file-table thead th:nth-child(n+4),
-  .file-table tbody td:nth-child(n+4) { display: none; }
 
   /* ── Intelligence ── */
   .intel-layout { flex-direction: column; height: calc(100vh - 50px - 64px); }

@@ -220,12 +220,12 @@ function renderFilePanel() {
       </div>
       ${banner}
       <table class="file-table">
-        <thead><tr><th>Name</th><th>Version</th><th>Status</th><th>Modified</th><th>Modified By</th><th>Size</th></tr></thead>
+        <thead><tr><th>Name</th><th>Version</th><th>Status</th><th>Modified</th></tr></thead>
         <tbody>
           ${f.files.map(file => `<tr class="file-row ${file.name === selectedFile ? 'selected-row' : ''}" data-file="${file.name}">
             <td><div class="fname"><div class="ficon ${file.icon}">${file.icon.toUpperCase()}</div> ${file.name}</div></td>
             <td>${file.ver}</td><td><span class="status-badge ${file.status}">${file.st}</span></td>
-            <td>${file.date}</td><td>${file.by}</td><td>${file.size}</td>
+            <td>${file.date}</td>
           </tr>`).join('')}
         </tbody>
       </table>
