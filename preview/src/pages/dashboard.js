@@ -30,20 +30,28 @@ const entities = [
   { name: 'Sunflower Preschool', type: 'Preschool', rev: 'S$2,104,800', enroll: '175 / 200', pct: 88, updated: 'May 5, 2026', status: 'on-track', statusText: 'On Track' },
 ];
 
-export function dashboardPage() {
+export function dashboardPage(project = {}) {
+  const name = project.name || 'Project Ballet';
+  const desc = project.description || 'Singapore Preschool Portfolio';
+  const holdPeriod = project.holdPeriod || 'Hold Year 3';
+  const invested = project.invested || '$25.0M';
+  const nav = project.nav || '$31.2M';
+  const irr = project.irr || '18.4%';
+  const holdYears = project.holdYears || '3.2 yrs';
+
   return `
     <div class="content">
       <div class="project-header">
-        <h1>Project Arts &mdash; Ballet</h1>
-        <div class="subtitle">Singapore Preschool Portfolio &middot; Gaw Capital Partners</div>
-        <div class="status">Active &mdash; Hold Year 3</div>
+        <h1>${name}</h1>
+        <div class="subtitle">${desc} &middot; Gaw Capital Partners</div>
+        <div class="status">Active &mdash; ${holdPeriod}</div>
       </div>
 
       <div class="metrics-row">
-        <div class="metric-card"><div class="value">$25.0M</div><div class="label">Investment Amount</div></div>
-        <div class="metric-card"><div class="value">$31.2M</div><div class="label">Current NAV</div></div>
-        <div class="metric-card"><div class="value red">18.4%</div><div class="label">Projected IRR</div></div>
-        <div class="metric-card"><div class="value">3.2 yrs</div><div class="label">Hold Period</div></div>
+        <div class="metric-card"><div class="value">${invested}</div><div class="label">Investment Amount</div></div>
+        <div class="metric-card"><div class="value">${nav}</div><div class="label">Current NAV</div></div>
+        <div class="metric-card"><div class="value red">${irr}</div><div class="label">Projected IRR</div></div>
+        <div class="metric-card"><div class="value">${holdYears}</div><div class="label">Hold Period</div></div>
       </div>
 
       <div class="section-title">Portfolio Entities</div>
@@ -92,27 +100,29 @@ export function dashboardPage() {
       <!-- Contracts & Leases -->
       <div class="panel" style="margin-bottom:24px">
         <div class="section-title">Contracts & Leases</div>
-        <table class="file-table">
-          <thead><tr><th>Entity</th><th>Type</th><th>Address / Details</th><th>Expiry</th><th>Status</th><th></th></tr></thead>
-          <tbody>
-            ${leases.map(l => `<tr class="lease-row" data-file="${l.file}" data-entity="${l.entity}" data-type="${l.type}" data-address="${l.address}" data-expiry="${l.expiry}" data-landlord="${l.landlord}" data-rent="${l.monthlyRent}">
-              <td style="font-weight:600">${l.entity}</td>
-              <td><span class="status-badge info">${l.type}</span></td>
-              <td style="font-size:12px;color:#5d6567">${l.address}</td>
-              <td><span class="tc-due ${l.daysLeft < 365 ? 'soon' : ''} ${l.daysLeft < 180 ? 'overdue' : ''}">${l.expiry}</span></td>
-              <td><span class="status-badge ${l.daysLeft < 365 ? (l.daysLeft < 180 ? 'critical' : 'attention') : 'on-track'}">${l.daysLeft < 365 ? (l.daysLeft < 180 ? 'Expiring Soon' : 'Under 1 Year') : 'Active'}</span></td>
-              <td><button class="view-contract-btn" data-file="${l.file}">View PDF</button></td>
-            </tr>`).join('')}
-            ${licenses.map(l => `<tr class="lease-row">
-              <td style="font-weight:600">${l.entity}</td>
-              <td><span class="status-badge approved">${l.type}</span></td>
-              <td style="font-size:12px;color:#5d6567">${l.number}</td>
-              <td><span class="tc-due ${l.daysLeft < 365 ? 'soon' : ''}">${l.expiry}</span></td>
-              <td><span class="status-badge ${l.daysLeft < 365 ? 'attention' : 'on-track'}">${l.daysLeft < 365 ? 'Renewal Due' : 'Active'}</span></td>
-              <td></td>
-            </tr>`).join('')}
-          </tbody>
-        </table>
+        <div class="table-scroll">
+          <table class="file-table" style="min-width:580px">
+            <thead><tr><th>Entity</th><th>Type</th><th>Address / Details</th><th>Expiry</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              ${leases.map(l => `<tr class="lease-row" data-file="${l.file}" data-entity="${l.entity}" data-type="${l.type}" data-address="${l.address}" data-expiry="${l.expiry}" data-landlord="${l.landlord}" data-rent="${l.monthlyRent}">
+                <td style="font-weight:600">${l.entity}</td>
+                <td><span class="status-badge info">${l.type}</span></td>
+                <td style="font-size:12px;color:#5d6567">${l.address}</td>
+                <td><span class="tc-due ${l.daysLeft < 365 ? 'soon' : ''} ${l.daysLeft < 180 ? 'overdue' : ''}">${l.expiry}</span></td>
+                <td><span class="status-badge ${l.daysLeft < 365 ? (l.daysLeft < 180 ? 'critical' : 'attention') : 'on-track'}">${l.daysLeft < 365 ? (l.daysLeft < 180 ? 'Expiring Soon' : 'Under 1 Year') : 'Active'}</span></td>
+                <td><button class="view-contract-btn" data-file="${l.file}">View PDF</button></td>
+              </tr>`).join('')}
+              ${licenses.map(l => `<tr class="lease-row">
+                <td style="font-weight:600">${l.entity}</td>
+                <td><span class="status-badge approved">${l.type}</span></td>
+                <td style="font-size:12px;color:#5d6567">${l.number}</td>
+                <td><span class="tc-due ${l.daysLeft < 365 ? 'soon' : ''}">${l.expiry}</span></td>
+                <td><span class="status-badge ${l.daysLeft < 365 ? 'attention' : 'on-track'}">${l.daysLeft < 365 ? 'Renewal Due' : 'Active'}</span></td>
+                <td></td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <!-- Project Loan Details -->
@@ -138,7 +148,7 @@ export function dashboardPage() {
 
       <!-- Contract Detail Modal -->
       <div id="contract-modal" class="modal-overlay hidden">
-        <div class="modal-card" style="width:560px">
+        <div class="modal-card" style="max-width:560px">
           <div class="modal-header"><h3 id="contract-modal-title">Contract Details</h3><button class="drawer-close" id="contract-modal-close">&times;</button></div>
           <div class="modal-body" id="contract-modal-body"></div>
         </div>

@@ -205,11 +205,27 @@ function addMessage(role, text, source) {
   }
 }
 
+function showTypingIndicator() {
+  const container = document.getElementById('chat-messages');
+  if (!container) return;
+  const el = document.createElement('div');
+  el.className = 'msg ai';
+  el.id = 'typing-msg';
+  el.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+  container.appendChild(el);
+  container.scrollTop = container.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  document.getElementById('typing-msg')?.remove();
+}
+
 function sendMessage(text) {
   if (!text.trim()) return;
   addMessage('user', text);
-  // Simulate typing delay
+  showTypingIndicator();
   setTimeout(() => {
+    removeTypingIndicator();
     const resp = findResponse(text);
     addMessage('ai', resp.a, resp.source);
   }, 600 + Math.random() * 800);
