@@ -9,8 +9,8 @@ export function portfolioPage() {
         <div class="portfolio-header-top">
           <div>
             <div class="portfolio-aum-label">Total AUM</div>
-            <div class="portfolio-aum">$337.0M</div>
-            <div class="portfolio-sub">7 Projects &middot; Asia Pacific</div>
+            <div class="portfolio-aum">$35.0B</div>
+            <div class="portfolio-sub">7 of 43 Projects &middot; Asia Pacific</div>
           </div>
           <div class="portfolio-summary-pills">
             <div class="ps-pill"><span class="ps-val">5</span><span class="ps-lbl">Active</span></div>
