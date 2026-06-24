@@ -219,7 +219,7 @@ function renderFilePanel() {
         <div class="breadcrumb">Project Arts &rsaquo; ${f.name}</div>
       </div>
       ${banner}
-      <table class="file-table">
+      <div class="table-scroll"><table class="file-table">
         <thead><tr><th>Name</th><th>Version</th><th>Status</th><th>Modified</th></tr></thead>
         <tbody>
           ${f.files.map(file => `<tr class="file-row ${file.name === selectedFile ? 'selected-row' : ''}" data-file="${file.name}">
@@ -228,7 +228,7 @@ function renderFilePanel() {
             <td>${file.date}</td>
           </tr>`).join('')}
         </tbody>
-      </table>
+      </table></div>
     </div>`;
 }
 

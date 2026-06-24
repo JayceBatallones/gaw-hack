@@ -47,7 +47,7 @@ export function monitoringPage() {
 
       <div class="matrix-panel">
         <h2>Monthly Submission Tracker <span style="font-size:12px;color:#9ca3af;font-weight:400;margin-left:8px">(click cells to toggle status)</span></h2>
-        <table class="matrix" id="tracker-matrix">
+        <div class="table-scroll"><table class="matrix" id="tracker-matrix">
           <thead><tr><th>Entity / Document</th>${months.map(m=>`<th>${m}</th>`).join('')}</tr></thead>
           <tbody>
             <tr class="group-header"><td colspan="12">Management Reports</td></tr>
@@ -55,7 +55,7 @@ export function monitoringPage() {
             <tr class="group-header"><td colspan="12">Bank Statements</td></tr>
             ${entitiesData.map((e,ei) => `<tr>${cellTd(e.name)}${e.bank.map((v,mi) => `<td><span class="cell ${cellMap[v][0]}" data-entity="${ei}" data-type="bank" data-month="${mi}">${cellMap[v][1]}</span></td>`).join('')}</tr>`).join('')}
           </tbody>
-        </table>
+        </table></div>
       </div>
 
       <!-- Cell detail popup -->
@@ -63,7 +63,7 @@ export function monitoringPage() {
 
       <div class="panel" style="margin-bottom:24px">
         <h2 style="font-size:16px;font-weight:600;margin-bottom:16px">Lease & License Tracker</h2>
-        <table class="file-table">
+        <div class="table-scroll"><table class="file-table">
           <thead><tr><th>Entity</th><th>Item</th><th>Expiry / Renewal</th><th>Days Remaining</th><th>Status</th></tr></thead>
           <tbody>
             <tr><td style="font-weight:600">Global Tots @ Mountbatten</td><td>Premises Lease</td><td>Sep 30, 2027</td><td>507</td><td><span class="status-badge attention">Under 18 Months</span></td></tr>
@@ -73,7 +73,7 @@ export function monitoringPage() {
             <tr><td style="font-weight:600">OCBC RCF</td><td>Loan Renewal</td><td>Jun 30, 2026</td><td style="color:#b12b35;font-weight:700">49</td><td><span class="status-badge critical">Urgent</span></td></tr>
             <tr><td style="font-weight:600">SDM International</td><td>ECDA License</td><td>Mar 15, 2027</td><td>308</td><td><span class="status-badge on-track">Active</span></td></tr>
           </tbody>
-        </table>
+        </table></div>
       </div>
 
       <div class="bottom-grid">
